@@ -15,7 +15,7 @@ export default function AppNavigator() {
         headerTintColor: '#fff',
       }}
     >
-      <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Meme do Dia 🎭' }} />
+      <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Meme do Dia' }} />
       <Stack.Screen name="Meme" component={MemeScreen} options={{ title: 'Tente adivinhar!' }} />
       <Stack.Screen name="Result" component={ResultScreen} options={{ title: 'Resultado' }} />
       <Stack.Screen name="Ranking" component={RankingScreen} options={{ title: 'Seu Progresso' }} />

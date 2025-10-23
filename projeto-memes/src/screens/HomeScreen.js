@@ -1,25 +1,19 @@
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Image } from 'react-native';
+
 
 export default function HomeScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        {/* Header com ícone */}
+        {/* Header com a home_image */}
         <View style={styles.header}>
-          <Text style={styles.emoji}>🎭</Text>
+           <Image
+            source={require('../../images/home_image-removebg-preview.png')}
+            style={styles.imageIcon}
+          />
           <Text style={styles.title}>Meme do Dia</Text>
           <Text style={styles.subtitle}>Descubra o meme de hoje!</Text>
         </View>
-
-        {/* Card de informações */}
-        <View style={styles.infoCard}>
-          <Text style={styles.infoText}>
-            🎯 Todo dia um novo meme para adivinhar!{'\n'}
-            💡 Use suas tentativas com sabedoria{'\n'}
-            🏆 Compita com outros jogadores
-          </Text>
-        </View>
-
         {/* Botões estilizados */}
         <View style={styles.buttonsContainer}>
           <TouchableOpacity 
@@ -39,7 +33,7 @@ export default function HomeScreen({ navigation }) {
 
         {/* Rodapé */}
         <Text style={styles.footer}>
-          Divirta-se! 😄
+          Calma calabreso! 😄
         </Text>
       </View>
     </SafeAreaView>
@@ -65,6 +59,11 @@ const styles = StyleSheet.create({
   emoji: {
     fontSize: 64,
     marginBottom: 16,
+  },
+    imageIcon: {
+    width: 160,
+    height: 160,
+    marginRight: 10,
   },
   title: {
     color: '#fff',

@@ -15,6 +15,7 @@ export default function MemeScreen({ navigation }) {
   const [sound, setSound] = useState();
 
   useEffect(() => {
+    //escolhe o meme com "base" no dia
     const todayIndex = new Date().getDate() % memes.length;
     setMeme(memes[todayIndex]);
     loadProgress().then((data) => {
@@ -25,12 +26,14 @@ export default function MemeScreen({ navigation }) {
     });
   }, []);
 
+  //função q toca o som
   async function playSound() {
     const { sound } = await Audio.Sound.createAsync({ uri: meme.sound });
     setSound(sound);
     await sound.playAsync();
   }
 
+  //função da tentativa
   async function handleTry() {
     if (!meme || result) return;
 
@@ -58,6 +61,7 @@ export default function MemeScreen({ navigation }) {
     setInput('');
   }
 
+  //erro
   if (!meme) return <Text>Carregando meme...</Text>;
 
   return (
