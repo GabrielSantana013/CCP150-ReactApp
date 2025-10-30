@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TextInput, Button, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { Audio } from 'expo-av';
-import { memes } from '../data/memes';
-import { saveProgress, loadProgress } from '../utils/storage';
+import firebase from '../../config/firebaseConfig';
 import MemeCard from '../components/MemeCard';
 
 export default function MemeScreen({ navigation }) {
@@ -14,26 +12,54 @@ export default function MemeScreen({ navigation }) {
   const [result, setResult] = useState(null);
   const [sound, setSound] = useState();
 
+  const userId = 'user01';
+
   useEffect(() => {
-    //escolhe o meme com "base" no dia
-    const todayIndex = new Date().getDate() % memes.length;
-    setMeme(memes[todayIndex]);
-    loadProgress().then((data) => {
-      if (data && data.date === new Date().toDateString()) {
-        setTries(data.tries);
-        setResult(data.result);
+    const today = new Date().toDateString();
+
+    async function loadData() {
+      try {
+        // 🔹 Carrega todos os memes
+        const memesSnap = await firebase.database().ref('memes').once('value');
+        if (memesSnap.exists()) {
+          const memesData = Object.values(memesSnap.val());
+          const todayIndex = new Date().getDate() % memesData.length;
+          setMeme(memesData[todayIndex]);
+        } else {
+          console.log('Nenhum meme encontrado!');
+        }
+
+        // 🔹 Carrega o progresso do usuário
+        const progressSnap = await firebase
+          .database()
+          .ref(`progress/${userId}/${today}`)
+          .once('value');
+
+        if (progressSnap.exists()) {
+          const data = progressSnap.val();
+          setTries(data.tries);
+          setResult(data.result);
+        }
+      } catch (error) {
+        console.error('Erro ao carregar memes:', error);
       }
-    });
+    }
+
+    loadData();
   }, []);
 
-  //função q toca o som
   async function playSound() {
+    if (!meme?.sound) return;
     const { sound } = await Audio.Sound.createAsync({ uri: meme.sound });
     setSound(sound);
     await sound.playAsync();
   }
 
-  //função da tentativa
+  async function saveProgress(newData) {
+    const today = new Date().toDateString();
+    await firebase.database().ref(`progress/${userId}/${today}`).set(newData);
+  }
+
   async function handleTry() {
     if (!meme || result) return;
 
@@ -58,10 +84,10 @@ export default function MemeScreen({ navigation }) {
         await saveProgress({ result: null, tries: newTries });
       }
     }
+
     setInput('');
   }
 
-  //erro
   if (!meme) return <Text>Carregando meme...</Text>;
 
   return (
@@ -76,6 +102,7 @@ export default function MemeScreen({ navigation }) {
         value={input}
         onChangeText={setInput}
       />
+
       <Button title="Enviar resposta" onPress={handleTry} />
       <Button title="Ouvir som" onPress={playSound} />
     </View>
