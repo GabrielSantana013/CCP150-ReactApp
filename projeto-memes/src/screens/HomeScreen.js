@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Image } from 'react-native';
-
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function HomeScreen({ navigation }) {
   return (
@@ -8,7 +8,7 @@ export default function HomeScreen({ navigation }) {
         {/* Header com a home_image */}
         <View style={styles.header}>
            <Image
-            source={require('../../images/home_image-removebg-preview.png')}
+            source={require('../../images/screens/home_image-removebg-preview.png')}
             style={styles.imageIcon}
           />
           <Text style={styles.title}>Meme do Dia</Text>

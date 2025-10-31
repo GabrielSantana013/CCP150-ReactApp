@@ -15,8 +15,8 @@ export default function RankingScreen() {
       {progress ? (
         <>
           <Text style={styles.text}>Data: {progress.date}</Text>
-          <Text style={styles.text}>Último resultado: {progress.result}</Text>
-          <Text style={styles.text}>Tentativas restantes: {progress.tries}</Text>
+          <Text style={styles.text}>Ultimo resultado: {progress.result}</Text>
+          <Text style={styles.text}>Tentativas usadas: {progress.attempts || 0}</Text>
         </>
       ) : (
         <Text style={styles.text}>Nenhum jogo registrado ainda!</Text>
