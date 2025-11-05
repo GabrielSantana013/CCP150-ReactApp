@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 export default function ResultScreen({ route, navigation }) {
   const { result, meme, attempts } = route.params;
 
+
   const getPerformanceMessage = () => {
     if (attempts === 1) {
       return "🎯 ACERTO DE PRIMEIRA! Incrível!";

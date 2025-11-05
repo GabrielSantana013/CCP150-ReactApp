@@ -12,7 +12,7 @@ export default function MemeScreen({ navigation }) {
   const [input, setInput] = useState('');
   const [attempts, setAttempts] = useState(0);
   const [sound, setSound] = useState();
-  const [buttonVibrating, setButtonVibrating] = useState(false); // 🔹 Novo estado para vibração
+  const [buttonVibrating, setButtonVibrating] = useState(false); 
 
   const userId = 'user01';
   const today = new Date().toDateString();
@@ -43,29 +43,46 @@ export default function MemeScreen({ navigation }) {
     }, 200);
   };
 
-  //Carrega meme e progresso
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const memesSnap = await firebase.database().ref('memes').once('value');
-        if (memesSnap.exists()) {
-          const memesData = Object.values(memesSnap.val());
-          const todayIndex = new Date().getDate() % memesData.length;
-          setMeme(memesData[todayIndex]);
-        }
+//Carrega meme e progresso
+useEffect(() => {
+  async function loadData() {
+    try {
+      const memesSnap = await firebase.database().ref('memes').once('value');
+      if (!memesSnap.exists()) return;
 
-        const saved = await AsyncStorage.getItem(`progress_${userId}_${today}`);
-        if (saved) {
-          const data = JSON.parse(saved);
-          setAttempts(data.attempts || 0);
+      const memesData = Object.values(memesSnap.val());
+      const todayIndex = new Date().getDate() % memesData.length;
+      const todayMeme = memesData[todayIndex]; // 🔹 Guarda localmente o meme do dia
+
+      setMeme(todayMeme);
+
+      const saved = await AsyncStorage.getItem(`progress_${userId}_${today}`);
+      if (saved) {
+        const data = JSON.parse(saved);
+        setAttempts(data.attempts || 0);
+
+        // 🔒 Se já jogou hoje (acertou ou errou)
+        if (data.result) {
+          await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
+          // 🔹 Usa o meme local (garantido)
+          navigation.replace('Result', {
+            result: data.result,
+            meme: todayMeme,
+            attempts: data.attempts || 0,
+          });
+
+          return;
         }
-      } catch (error) {
-        console.error('Erro ao carregar dados:', error);
       }
+    } catch (error) {
+      console.error('Erro ao carregar dados:', error);
     }
+  }
 
-    loadData();
-  }, []);
+  loadData();
+}, []);
+
 
   async function playSound() {
     if (!meme?.sound) return;
@@ -173,7 +190,7 @@ async function saveProgress(newData) {
       navigation.navigate('Result', { 
         result: 'Acertou!', 
         meme, 
-        attempts: newAttempts 
+        attempts: (newAttempts-1) 
       });
     } else {
       // VIBRAÇÃO APENA1S NO ERRO
