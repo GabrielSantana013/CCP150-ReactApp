@@ -84,6 +84,7 @@ Desenvolver um aplicativo mobile que apresenta um meme diferente a cada dia, ond
 
 ### 📸 GIF do Aplicativo
 
+![Demo do aplicativo](./example_react.gif)
 
 ---
 
