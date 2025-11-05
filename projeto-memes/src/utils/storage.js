@@ -9,3 +9,23 @@ export async function loadProgress() {
   const data = await AsyncStorage.getItem('@meme_progress');
   return data ? JSON.parse(data) : null;
 }
+
+export const loadHistory = async (userId = 'user01') => {
+  try {
+    const historyKey = `history_${userId}`;
+    const history = await AsyncStorage.getItem(historyKey);
+    return history ? JSON.parse(history) : [];
+  } catch (error) {
+    console.error('Erro ao carregar histórico:', error);
+    return [];
+  }
+};
+
+export const clearHistory = async (userId = 'user01') => {
+  try {
+    const historyKey = `history_${userId}`;
+    await AsyncStorage.removeItem(historyKey);
+  } catch (error) {
+    console.error('Erro ao limpar histórico:', error);
+  }
+};

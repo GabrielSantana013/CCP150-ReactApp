@@ -4,15 +4,15 @@ import firebase from "firebase";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-const firebaseConfig {
-  apiKey: "SUA_API_KEY_AQUI",
-  authDomain: "SEU_AUTH_DOMAIN_AQUI",
-  databaseURL: "SUA_DATABASE_URL_AQUI",
-  projectId: "SEU_PROJECT_ID_AQUI",
-  storageBucket: "SEU_STORAGE_BUCKET_AQUI",
-  messagingSenderId: "SEU_MESSAGING_SENDER_ID_AQUI",
-  appId: "SEU_APP_ID_AQUI",
-  measurementId: "SEU_MEASUREMENT_ID_AQUI"
+const firebaseConfig = {
+  apiKey: "AIzaSyATs6dI3VTSHsFHJsDdTHWB2o1sd3k33Dc",
+  authDomain: "projetomenes.firebaseapp.com",
+  databaseURL: "https://projetomenes-default-rtdb.firebaseio.com",
+  projectId: "projetomenes",
+  storageBucket: "projetomenes.firebasestorage.app",
+  messagingSenderId: "648321692863",
+  appId: "1:648321692863:web:3c22f0053901755802c20a",
+  measurementId: "G-QPPDNRF8MF"
 };
 
 // Initialize Firebase
